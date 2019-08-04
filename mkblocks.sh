@@ -76,7 +76,7 @@ while getopts "h:l:L:p:x:o:d:s:-" opt; do
   case $opt in
     h) test -n "$OPTARG" && header=$OPTARG;;
     l) test -n "$OPTARG" && length=$OPTARG;;
-    L) test -n "$OPTARG" && length=$OPTARG;;
+    L) test -n "$OPTARG" && strlength=$OPTARG;;
     p) test -n "$OPTARG" && prefix=$OPTARG;;
     x) test -n "$OPTARG" && suffix=$OPTARG;;
     o) test -n "$OPTARG" && policy=$OPTARG;;
