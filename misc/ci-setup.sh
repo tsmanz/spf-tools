@@ -47,3 +47,4 @@ then
 fi
 
 test x"$SEMAPHORE" = x"true" && install-package gawk
+true
