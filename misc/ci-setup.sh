@@ -17,6 +17,7 @@
 #
 ##############################################################################
 
+set -x
 export PATH=$HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:$PATH
 
 CD_CACHE=$HOME/.m2/repository
