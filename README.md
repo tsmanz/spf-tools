@@ -43,7 +43,7 @@ should be saved as an otherwise unused subdomain TXT record
 
 Create a configuration file:
 
-    cat > ~/.spf-toolsrc <<EOF
+    cat > ~/spf-tools/.spf-toolsrc <<EOF
     ROOT_DOMAIN=domain.com # Root domain
     DOMAIN=spf.domain.com # First SPF Domain/Subdomain (can be the same as the root domain if that's where you need it)
     ORIG_SPF=spf-rawspf.domain.com # Raw SPF record with all the includes you want to flatten
