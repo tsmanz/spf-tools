@@ -51,11 +51,11 @@ apicmd() {
     "$@"
 }
 
-# Read TOKEN and EMAIL
+# Read TOKEN
 test -r $SPFTRC && . $SPFTRC
 
 test -n "$TOKEN" || { echo "TOKEN not set! Exiting." >&2; exit 1; }
-test -n "$EMAIL" || { echo "EMAIL not set! Exiting.">&2; exit 1; }
+																  
 
 test "$1" = "verify" && {
 	apicmd GET "/user/tokens/verify"
@@ -68,7 +68,7 @@ cat > $zonefile
 trap "rm -f $idsfile $zonefile $zonefile-data" EXIT
 
 DOMAIN_ID=$(apicmd GET /zones | jq -r '.result | .[] | .name + ":" + .id' \
-            | grep $DOMAIN) \
+            | grep "$ROOT_DOMAIN:") \
   || exit 1
 DOMAIN_ID=$(echo $DOMAIN_ID | cut -d: -f2)
 
@@ -78,7 +78,7 @@ apicmd GET "/zones/$DOMAIN_ID/dns_records?type=TXT" \
 while read line
 do
   name=$(echo $line | cut -d" " -f1)
-  content=$(echo $line | cut -d^ -f2 | tr -d \")
+  content=$(echo $line | cut -d \" -f2 | tr -d \")
   id_to_change=$(grep "^$name" $idsfile | cut -d: -f2)
 
   echo -n "Changing $name with id $id_to_change... "
@@ -89,4 +89,5 @@ EOF
   apicmd PUT "/zones/$DOMAIN_ID/dns_records/$id_to_change" \
     --data "@${zonefile}-data" | jq .success | grep -q true \
     && echo OK || echo error
+
 done < $zonefile
