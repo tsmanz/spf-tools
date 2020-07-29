@@ -20,6 +20,8 @@ Simple tools for keeping the SPF TXT records tidy in order to fight
 
 ## Release notes
 
+### 2020 - Fork to fix up Cloudflare Update component
+
 ### 2019/10 - new domain spf-tools.eu.org
 
 Domain name spf-tools.eu.org is used for testing now.
@@ -40,11 +42,14 @@ should be saved as an otherwise unused subdomain TXT record
 Create a configuration file:
 
     cat > ~/.spf-toolsrc <<EOF
-    DOMAIN=spf-tools.eu.org
-    ORIG_SPF=spf-orig.spf-tools.eu.org
-    DESPF_SKIP_DOMAINS=_spf.domain1.com:spf.domain2.org
-    DNS_TIMEOUT=5
-    DNS_SERVER=
+    ROOT_DOMAIN=domain.com # Root domain
+    DOMAIN=spf.domain.com # First SPF Domain/Subdomain (can be the same as the root domain if that's where you need it)
+    ORIG_SPF=spf-rawspf.domain.com # Raw SPF record with all the includes you want to flatten
+    DESPF_SKIP_DOMAINS=_spf.domain1.com:spf.domain2.org # SPF includes to exclude from flatterning
+    DNS_TIMEOUT=5 # Timeout for DNS Query
+    DNS_SERVER= 1.1.1.1 # Your prefered DNS server
+    TOKEN=CloudFlareToken # Required to automatically update cloudflare hosted DNS
+	  NOTIFY_EMAIL=alerts@domain.com # Email address to send results of Cloudflare DNS update/fail
     EOF
 
 Now just call any of the scripts described below.
@@ -184,30 +189,6 @@ Usage:
       | tee /tmp/out | grep "Too many DNS look-ups!" \
       || cat /tmp/out | ./mkzoneent.sh
 
-
-### route53.sh
-
-Dependencies: [jq](https://stedolan.github.io/jq/),
-[aws](https://aws.amazon.com/cli/),
-[awk](https://www.gnu.org/software/gawk/),
-[sed](https://www.gnu.org/software/sed/),
-[grep](https://www.gnu.org/software/grep/)
-
-Script to update pre-existing TXT SPF records for a domain according
-to the input in DNS zone format.
-
-The AWS CLI can be configured using `~/.aws/credentials` or using
-environment variables: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
-(find more details in [Configuring the AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-environment)
-documentation.
-
-
-Usage:
-
-    ./despf.sh | ./simplify.sh | ./mkblocks.sh | \
-      ./route53.sh <hosted_zone_id>
-
-
 ### iprange.sh
 
 Extra dependencies: [iprange](https://github.com/firehol/iprange)
@@ -235,10 +216,6 @@ Example:
     ./despf.sh | ./normalize.sh | ./simplify.sh | ./iprange.sh \
       | ./mkblocks.sh | ./xsel.sh
 
-## Free Ad
-
-As we are successfully using a free eu.org domain, we are proud to
-spread the word: Free domains: http://www.eu.org/
 
 ## Links
 
