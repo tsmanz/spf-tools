@@ -22,6 +22,8 @@ Simple tools for keeping the SPF TXT records tidy in order to fight
 
 ### 2020 - Fork to fix up Cloudflare Update component
 
+aws DNS update script removed as it's of no use to me.
+
 ### 2019/10 - new domain spf-tools.eu.org
 
 Domain name spf-tools.eu.org is used for testing now.
