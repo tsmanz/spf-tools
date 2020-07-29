@@ -31,12 +31,14 @@ test -n "$ORIG_SPF" || { echo "ORIG_SPF not set! Exiting."; exit 1; }
 bash -se <<EOF
 PATH=$BINDIR:$PATH
 cd $BINDIR
-exec > $HOME/runspftools.log 2>&1
+exec > $HOME/spf-tools/runspftools.log 2>&1
 date
-git pull
+#git pull
 compare.sh $DOMAIN $ORIG_SPF || despf.sh $ORIG_SPF \
   | normalize.sh | simplify.sh | mkblocks.sh $DOMAIN \
   | mkzoneent.sh | cloudflare.sh $DOMAIN
-sleep 300
-exec $0
+notify.sh
+
+#sleep 300
+#exec $0
 EOF
