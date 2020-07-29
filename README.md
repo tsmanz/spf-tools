@@ -51,7 +51,7 @@ Create a configuration file:
     DNS_TIMEOUT=5 # Timeout for DNS Query
     DNS_SERVER= 1.1.1.1 # Your prefered DNS server
     TOKEN=CloudFlareToken # Required to automatically update cloudflare hosted DNS
-	  NOTIFY_EMAIL=alerts@domain.com # Email address to send results of Cloudflare DNS update/fail
+    NOTIFY_EMAIL=alerts@domain.com # Email address to send results of Cloudflare DNS update/fail
     EOF
 
 Now just call any of the scripts described below.
